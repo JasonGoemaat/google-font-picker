@@ -92,3 +92,8 @@ the tests expects the field to have that value, but another test expects
 the h1 tag to render the titale we gave it.  I fixed the first test to
 expect the title field to be google-font-picker as well and got 2 failures
 as expected.  Then I changed the title to be that and got green lights.
+
+I created the second commit and created this repository on github: [git@github.com:JasonGoemaat/google-font-picker.git](git@github.com:JasonGoemaat/google-font-picker.git)
+
+I added the MIT `LICENSE` file and am about to commit and push...
+
