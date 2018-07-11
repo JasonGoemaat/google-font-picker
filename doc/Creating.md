@@ -97,3 +97,191 @@ I created the second commit and created this repository on github: [git@github.c
 
 I added the MIT `LICENSE` file and am about to commit and push...
 
+# Server-Side Rendering
+
+[This article](https://hackernoon.com/deploying-angular-universal-v6-with-firebase-c86381ddd445) is pretty good for it.
+
+First I install the firebase-tools:
+
+    npm install -g firebase-tools
+
+Hmmm...  Seems to include making it Angular Universal with 
+Server Side Rendering, I'll try it...  For othat I need
+`@angular/platform-server`:
+
+    npm install --save @angular/platform-server
+
+For adding server side config, we need to add a `server` section
+under `projects.PROJECT_NAME.architect`:
+
+    "server": {
+        "builder": "@angular-devkit/build-angular:server",
+        "options": {
+            "outputPath": "functions/dist/server",
+            "main": "src/main-ssr.ts",
+            "tsConfig": "src/tsconfig.app-ssr.json"
+        }
+    }
+
+And they want me to modify output to the `functions/dist/browser`
+folder?  Hmmm...  We'll see how this goes.  This is
+`architect.build.options.outputPath` in `angular.json`
+
+Now we need a modules for the server version:
+`src/app/app.server.module.ts`.
+
+And an entry point for the server module: `src/main-ssr.ts`.
+
+And a tsconfig file for ssr: `src/tsconfig.app-ssr.json`.
+
+Now include a transition in the app's browser module, by adding
+`.withServerTransition` to the BrowserModule import.
+
+    BrowserModule.withServerTransition({ appId: APP_ID })
+
+Now build production and an 'ng run' command to build the
+server version of the app:
+
+    ng build --prod
+    ng run google-font-picker:server
+
+Well, that all builds even though I'm using a fake app id.  Not on to actually adding firebase (after a quick commit)...
+
+# Firebase
+
+Enter `firebase login`.  This should open an OAUTH login in your
+browser.
+
+Enter `firebase init` to initialize firebase in your project. 
+This will ask you several questions:
+
+* 'Y'es (or ENTER) "Are you ready to proceed?"
+* Pick options, definitely 'Functions' and 'Hosting', I'm picking all...
+* And I pick to create a new project, naming it google-font-picker
+* Default options for everything, including (per the article) 'JavaScript' instead of 'TypeScript' for simplicity
+* I don't think 'public' is the right directory, but it says
+* I DID change the option to make it a SPA, rewriting everything to index.html
+
+Now have to edit `firebase.json` to tell it to use the ssr function
+for server side rendering.
+
+Finally after build you need to copy all from `functions/dist/browser`
+to `public`, and rename index.html to index2.html because ssr won't
+be used if it finds index.html?
+
+    cp -a functions/dist/browser/. public/
+    mv public/index.html public/index2.html
+
+And (crossing fingers):
+
+    firebase deploy
+
+I had to remove the lint step from `functions.predeploy` in
+`firebase.json`.  Then I had to go to the firbase console and
+create a database.
+
+Hmm..  Going to site it didn't find `index.html`, so ssr isn't being
+called when requesting the root.  I added `index.html` back in and it
+worked, but no SSR.  I refreshed the page and all I saw in the response
+in the dev tools was the normal index.html.  So I'm trying removing
+this from `hosting.rewrites` in `firebase.json` and removing index.html
+again (it should still be index2.html):
+
+    {
+        "source": "**",
+        "destination": "/index.html"
+    }
+
+Ok, now getting 404 again.  I think I missed actually adding a function.  Yes,  I see now there are **2 PARTS**.  I skipped some steps in part II of [the guide](https://hackernoon.com/deploying-angular-universal-v6-with-firebase-c86381ddd445)
+
+To fix I am following those steps.  I ran this:
+
+    npm install --save firebase-functions
+
+I see they have `firebase-admin too`, so I added this:
+
+    npm install --save firebase-admin
+
+I added these (might also need `express`) to dependencies in
+`functions/package.json`:
+
+    "@angular/animations": "^6.0.3",
+    "@angular/common": "^6.0.3",
+    "@angular/compiler": "^6.0.3",
+    "@angular/core": "^6.0.3",
+    "@angular/forms": "^6.0.3",
+    "@angular/http": "^6.0.3",
+    "@angular/platform-browser": "^6.0.3",
+    "@angular/platform-browser-dynamic": "^6.0.3",
+    "@angular/platform-server": "^6.0.7",
+    "@angular/router": "^6.0.3",
+    "rxjs": "^6.0.0",
+    "zone.js": "^0.8.26",
+
+And ran `npm install` in the functions directory, or you could do this:
+
+    npm --prefix functions install
+
+Now you actually have to create a function to serve the app.  Create
+`functions.https.onRequest`.  It will import `AppServerModuleNgFactory`
+which was generated in Step I Part 8, and an 'index' variable that gets
+the contents of the index.html (renamed index2.html) file.  Use
+renderModuleFactory to generate the html file we send as a response
+with url and document parameters.  url has the route and document is
+the full html of the page returned.  Basically this in 'functions/index.js' ([link to his file on github](https://github.com/aaronte/angular-universal-firebase/blob/master/functions/index.js):
+
+
+    require('zone.js/dist/zone-node');
+
+    const functions = require('firebase-functions');
+    const express = require('express');
+    const path = require('path');
+    const { enableProdMode } = require('@angular/core');
+    const { renderModuleFactory } = require('@angular/platform-server');
+
+    const { AppServerModuleNgFactory } = require('./dist/server/main');
+
+    enableProdMode();
+
+    const index = require('fs')
+    .readFileSync(path.resolve(__dirname, './dist/browser/index.html'), 'utf8')
+    .toString();
+
+    let app = express();
+
+    app.get('**', function(req, res) {
+    renderModuleFactory(AppServerModuleNgFactory, {
+        url: req.path,
+        document: index
+    }).then(html => res.status(200).send(html));
+    });
+
+    exports.ssr = functions.https.onRequest(app);
+
+Notice the last line we export `ssr`.  Now we change `firebase.json`
+`hosting.rewrites` to use the `ssr` function.  I don't get the first
+part sending css and js to index2.html?  Oh well...
+
+Ok, I ***did*** have to add express.  Doing that now:
+
+    npm --prefix functions install express --save
+
+Didn't work for some reason, going into `functions` directory and
+executing:
+
+    yarn add express
+
+And back up to run and running:
+
+    firebase deploy --only functions
+
+Well, well, well..  It worked!
+
+Adding this to the bottom of .gitignore:
+
+    # functions stuff and public directory
+    /functions/node_modules
+    /functions/dist
+    /public
+
+And committing :)

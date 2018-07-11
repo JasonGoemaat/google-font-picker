@@ -5,6 +5,8 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "prod": "ng build --prod && ng run google-font-picker:server && cp -a functions/dist/browser/. public/ && mv public/index.html public/index2.html",
+    "copyprod": "cp -a functions/dist/browser/. public/ && mv public/index.html public/index2.html",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -19,8 +21,11 @@
     "@angular/http": "^6.0.3",
     "@angular/platform-browser": "^6.0.3",
     "@angular/platform-browser-dynamic": "^6.0.3",
+    "@angular/platform-server": "^6.0.7",
     "@angular/router": "^6.0.3",
     "core-js": "^2.5.4",
+    "firebase-admin": "^5.12.1",
+    "firebase-functions": "^1.1.0",
     "rxjs": "^6.0.0",
     "zone.js": "^0.8.26"
   },
