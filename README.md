@@ -1,5 +1,7 @@
 # GoogleFontPicker
 
+Build Status: [![CircleCI](https://circleci.com/gh/JasonGoemaat/google-font-picker/tree/master.svg?style=svg)](https://circleci.com/gh/JasonGoemaat/google-font-picker/tree/master)
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.8.
 
 This readme was created by the cli, to see project documentation,
