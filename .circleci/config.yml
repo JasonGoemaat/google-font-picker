@@ -7,14 +7,14 @@ jobs:
       - checkout
 
       # Cache to enable faster future jobs
-      - run: npm install
+      - run: npm install --silent
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
       # Run tests
-      - run: npm run test
+      - run: npm run test -- --progress=false --watch=false
   deploy-job:
     docker:
       - image: circleci/node:8-browsers

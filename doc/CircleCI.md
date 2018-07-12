@@ -31,3 +31,20 @@ variable called `$FIREBASE_DEPLOY_TOKEN`, but at this point it says to push the
 changes and click 'Start building' and I don't have a CircleCI project yet.
 The config only tests for now so I should be able to add it without it
 trying to deploy, I'll add the deploy later.
+
+## First build and test
+
+Well, first build took 11:22 and failed...  Looking at the log though it is
+very long.  I think I can add `--silent` to the npm install...  `ng test`
+had a ton of progress and block characters so need to figure that out too...
+
+Ah, I see at 10:19 npm run test timed out...  Guess by default it watches,
+so going to tell it not to also.
+
+    npm run test -- --progress=false --watch=false
+
+## Second build and test
+
+Might as well add that `$FIREBASE_DEPLOY_TOKEN` variable with the value from
+`firebase login:ci` while I'm at it.  I think the name doesn't have a
+`$` when entring it...
