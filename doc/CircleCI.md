@@ -48,3 +48,9 @@ so going to tell it not to also.
 Might as well add that `$FIREBASE_DEPLOY_TOKEN` variable with the value from
 `firebase login:ci` while I'm at it.  I think the name doesn't have a
 `$` when entring it...
+
+That worked great...
+
+## Deploy
+
+I'm just commenting out the deploy lines in `.circleci/config.yml`...
