@@ -29,7 +29,7 @@ let cachedTime = {}; // Number(new Date()) when path cached
 app.get('**', function(req, res) {
 
     renderModuleFactory(AppServerModuleNgFactory, { url: req.path, document: index }).then(html => {
-        res.status(200).send(html + 'DONE');
+        res.status(200).send(html);
     });
 
     // here's my attempt at caching

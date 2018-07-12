@@ -20,7 +20,7 @@ jobs:
       - image: circleci/node:8-browsers
     steps:
       - checkout
-      - run: cd functions && npm install
+      - run: cd functions && npm install && cd ..
       - run: npm run prod
       - run: ./node_modules/.bin/firebase deploy --token=$FIREBASE_DEPLOY_TOKEN
 

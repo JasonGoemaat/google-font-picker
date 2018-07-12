@@ -66,3 +66,7 @@ Ok, this time couldn't find 'ng', think it was stuck in the functions
 dirctory.  So I changed the step to come back:
 
     - run: cd functions && npm install && cd ..
+
+Ok, 'npm install --silent' failed this time...  Weird...  Trying again with
+SSH...  Ran fine with ssh I think, taking 'DONE' off the end of
+`functions/index.js` I used to verify CircleCI was deploying...
