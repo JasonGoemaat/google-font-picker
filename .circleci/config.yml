@@ -21,6 +21,12 @@ jobs:
     steps:
       - checkout
       - run: cd functions && npm install && cd ..
+      - run: npm install --silent
+      - save_cache:
+        paths:
+          - node_modules
+          - functions/node_modules
+        key: v1-dependenciesb-{{ checksum "package.json" }}-{{ checksum "functions/package.json" }}
       - run: npm run prod
       - run: ./node_modules/.bin/firebase deploy --token=$FIREBASE_DEPLOY_TOKEN
 
