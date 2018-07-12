@@ -61,3 +61,8 @@ I opted for javascript only...  Removing this part of it:
     && npm run build
 
 Also I'm adding some text to the home page so I can tell when it deployed...
+
+Ok, this time couldn't find 'ng', think it was stuck in the functions
+dirctory.  So I changed the step to come back:
+
+    - run: cd functions && npm install && cd ..
