@@ -17,11 +17,10 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     if (isPlatformBrowser(this.platformId)) {
+      console.log(`AppComponent.ngOnInit(): loadingString is "${this.loadingString}" and loadingColor is "${this.loadingColor}"`);
       setTimeout(() => {
         this.loadingString = 'Loaded!';
-        setTimeout(() => {
-          this.loadingColor = '#0f0';
-        },1000);
+        this.loadingColor = '#0f0';
       }, 0);
     }
   }
