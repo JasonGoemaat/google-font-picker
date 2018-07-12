@@ -54,3 +54,10 @@ That worked great...
 ## Deploy
 
 I'm just commenting out the deploy lines in `.circleci/config.yml`...
+
+That failed, no build script in functions directory, probably because
+I opted for javascript only...  Removing this part of it:
+
+    && npm run build
+
+Also I'm adding some text to the home page so I can tell when it deployed...
