@@ -6,6 +6,7 @@ This readme was created by the cli, to see project documentation,
 follow these links:
 
 * [Creating](doc/Creating.md)
+* [CircleCI](doc/CircleCI.md)
 
 ## Development server
 
