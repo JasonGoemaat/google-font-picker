@@ -23,11 +23,37 @@ const index = require('fs')
 
 let app = express();
 
+let cached = {}; // key is path
+let cachedTime = {}; // Number(new Date()) when path cached
+
 app.get('**', function(req, res) {
-  renderModuleFactory(AppServerModuleNgFactory, {
-    url: req.path,
-    document: index
-  }).then(html => res.status(200).send(html));
+
+    renderModuleFactory(AppServerModuleNgFactory, { url: req.path, document: index }).then(html => {
+        res.status(200).send(html + 'DONE');
+    });
+
+    // here's my attempt at caching
+    // let path = req.path;
+    // let html = cached[path];
+    // let time = cachedTime[path];
+
+    // if (html) {
+    //     if (Number(new Date()) - time > 3600000) {
+    //         // been an hour, redo
+    //         cachedTime[path] = Number(new Date());
+    //         renderModuleFactory(AppServerModuleNgFactory, { url: req.path, document: index }).then(html => {
+    //             cached[path] = html;
+    //         });
+    //     }
+    //     res.status(200).send(html);
+    //     return;
+    // }
+
+    // renderModuleFactory(AppServerModuleNgFactory, { url: req.path, document: index }).then(html => {
+    //     cachedTime[path] = Number(new Date());
+    //     cached[path] = html;
+    //     res.status(200).send(html);
+    // });
 });
 
 exports.ssr = functions.https.onRequest(app);

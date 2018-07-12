@@ -285,3 +285,48 @@ Adding this to the bottom of .gitignore:
     /public
 
 And committing :)
+
+Ok, tried a little timeout thing so I could tell when it's loaded.  It took
+me a long time until I found [this page](https://github.com/angular/universal/blob/master/docs/gotchas.md) on gotchas
+with Angular Universal.  You can inject `PLATFORM_ID` from `@angular/core`
+which turns out to be a string, 'browser' if running on the client browser
+(or in tests I believe).  There is an `isPlatformBrowser` function in
+`@angular/common` you can use to check it though...
+
+    export class AppComponent implements OnInit {
+        title = 'Webfont Picker';
+        loadingString = 'Loading...';
+        loadingColor = 'yellow';
+
+        constructor(@Inject(PLATFORM_ID) private platformId: Object) {
+            if (typeof(window) !== 'undefined') window['CAPP'] = this;
+        }
+
+        ngOnInit() {
+            if (isPlatformBrowser(this.platformId)) {
+                setTimeout(() => {
+                    this.loadingString = 'Loaded!';
+                    setTimeout(() => {
+                    this.loadingColor = '#0f0';
+                    },1000);
+                }, 0);
+            }
+        }
+    }
+
+You can use `fixture.whenStable()` for testing after timers have completed:
+
+    it('should change loading message quickly', async(() => {
+      const fixture = TestBed.createComponent(AppComponent);
+      fixture.detectChanges();
+
+      fixture.whenStable().then(() => {
+        fixture.detectChanges();
+        const compiled = fixture.debugElement.nativeElement;
+        expect(compiled.querySelector('h2').textContent).toContain('Loaded!');
+        expect(compiled.querySelector('h2').style.backgroundColor).toEqual('rgb(0, 255, 0)');
+      });
+    }));
+
+Ok, I'm going to commit 'SSR Fixes', all tests are passing and I think it's
+doing what I want in the browser when I deploy.
