@@ -14,6 +14,7 @@
 
 ## SampleText
 
+* IsDefault - bool
 * Name - string
 * Text - string
 
