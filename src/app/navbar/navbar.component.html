@@ -1,3 +1,9 @@
-<p>
-  navbar works!
-</p>
+<div class="brand">
+  <img src="/assets/Favicon/inkscape.png">
+  <span>Webfont Picker</span>
+</div>
+<div class="items">
+  <a class="item" routerLinkActive="active" [routerLink]="['/']" [routerLinkActiveOptions]="{exact:true}">HOME</a>
+  <a class="item" routerLinkActive="active" [routerLink]="['browse']">BROWSE</a>
+  <a class="item" routerLinkActive="active" [routerLink]="['login']" style="margin-right: 10px">LOGIN</a>
+</div>

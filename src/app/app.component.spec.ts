@@ -29,29 +29,29 @@ describe('AppComponent', () => {
     const app = fixture.debugElement.componentInstance;
     expect(app.title).toEqual('Webfont Picker');
   }));
-  it('should render title in a h1 tag', async(() => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Welcome to Webfont Picker!');
-  }));
-  it('should render loading message in a h2 tag', async(() => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h2').textContent).toContain('Loading...');
-    expect(compiled.querySelector('h2').style.backgroundColor).toEqual('yellow');
-  }));
-  it('should change loading message quickly', async(() => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
+  // it('should render title in a h1 tag', async(() => {
+  //   const fixture = TestBed.createComponent(AppComponent);
+  //   fixture.detectChanges();
+  //   const compiled = fixture.debugElement.nativeElement;
+  //   expect(compiled.querySelector('h1').textContent).toContain('Welcome to Webfont Picker!');
+  // }));
+  // it('should render loading message in a h2 tag', async(() => {
+  //   const fixture = TestBed.createComponent(AppComponent);
+  //   fixture.detectChanges();
+  //   const compiled = fixture.debugElement.nativeElement;
+  //   expect(compiled.querySelector('h2').textContent).toContain('Loading...');
+  //   expect(compiled.querySelector('h2').style.backgroundColor).toEqual('yellow');
+  // }));
+  // it('should change loading message quickly', async(() => {
+  //   const fixture = TestBed.createComponent(AppComponent);
+  //   fixture.detectChanges();
 
-    fixture.whenStable().then(() => {
-      fixture.detectChanges();
-      const compiled = fixture.debugElement.nativeElement;
-      expect(compiled.querySelector('h2').textContent).toContain('Loaded!');
-      expect(compiled.querySelector('h2').style.backgroundColor).toEqual('rgb(0, 255, 0)');
-    });
-  }));
+  //   fixture.whenStable().then(() => {
+  //     fixture.detectChanges();
+  //     const compiled = fixture.debugElement.nativeElement;
+  //     expect(compiled.querySelector('h2').textContent).toContain('Loaded!');
+  //     expect(compiled.querySelector('h2').style.backgroundColor).toEqual('rgb(0, 255, 0)');
+  //   });
+  // }));
 
 });

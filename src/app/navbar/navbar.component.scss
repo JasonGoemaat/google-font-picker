@@ -1,0 +1,62 @@
+$mainColor: rgba(0,0,0,0.55);
+$backgroundColor: rgba(255,255,255,1);
+$activeColor: rgba(255,92,82,1);
+
+:host {
+    color: $mainColor;
+    background-color: $backgroundColor;
+    border-bottom: solid 2px $mainColor;
+
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    div.brand {
+        height: 50px;
+        display: flex;
+        align-items: center;
+        
+        img {
+            margin-left: 10px;
+        }
+
+        span {
+            margin-left: 10px;
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+            font-size: x-large;
+            font-style: italic;
+        }
+    }
+
+    div.items {
+        display: flex;
+        align-items: center;
+
+        .item {
+            display: block;
+            text-decoration: none;
+            color: $mainColor !important;
+
+            font-size: 0.9em;
+            padding: 0 10px;
+            height: 50px;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+
+            &:hover {
+                text-decoration: underline;
+                cursor: pointer;
+            }
+
+            &.active {
+                color: $activeColor !important;
+                &:hover {
+                    background-color: $backgroundColor;
+                    color: $activeColor;
+                }
+            }
+        }
+    }
+}

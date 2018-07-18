@@ -3,4 +3,8 @@
 @import 'variables';
 @import '~font-awesome/scss/font-awesome';
 
-body { background-color: #eef }
+body {
+    background-color: #f4f4f4;
+    margin: 0;
+    font-family: Roboto;
+}

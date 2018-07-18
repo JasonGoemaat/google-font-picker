@@ -5,6 +5,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { HomeComponent } from './home/home.component';
+import { LoginComponent } from './login/login.component';
+import { BrowseComponent } from './browse/browse.component';
 
 const APP_ID = 'google-font-picker';
 
@@ -13,6 +15,8 @@ const APP_ID = 'google-font-picker';
     AppComponent,
     NavbarComponent,
     HomeComponent,
+    LoginComponent,
+    BrowseComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: APP_ID }),
