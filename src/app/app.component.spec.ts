@@ -3,7 +3,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { NavbarComponent } from './navbar/navbar.component';
-import { AppRoutingModule } from './app-routing.module'
+import { AppRoutingModule } from './app-routing.module';
 import { tick } from '../../node_modules/@angular/core/src/render3';
 
 describe('AppComponent', () => {
@@ -14,7 +14,6 @@ describe('AppComponent', () => {
       ],
       declarations: [
         AppComponent,
-//        HomeComponent,
         NavbarComponent,
       ],
     }).compileComponents();
