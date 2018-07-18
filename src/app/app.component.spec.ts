@@ -1,12 +1,21 @@
 import { TestBed, async, fakeAsync } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
+import { HomeComponent } from './home/home.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { AppRoutingModule } from './app-routing.module'
 import { tick } from '../../node_modules/@angular/core/src/render3';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule,
+      ],
       declarations: [
-        AppComponent
+        AppComponent,
+//        HomeComponent,
+        NavbarComponent,
       ],
     }).compileComponents();
   }));
@@ -32,7 +41,6 @@ describe('AppComponent', () => {
     const compiled = fixture.debugElement.nativeElement;
     expect(compiled.querySelector('h2').textContent).toContain('Loading...');
     expect(compiled.querySelector('h2').style.backgroundColor).toEqual('yellow');
-    //expect(compiled.querySelector('h2').style.backgroundColor).toEqual('rgb(0, 255, 0)');
   }));
   it('should change loading message quickly', async(() => {
     const fixture = TestBed.createComponent(AppComponent);
